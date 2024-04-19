@@ -25,4 +25,11 @@ public class UserService {
 			);
 	}
 
+	@Transactional
+	public User updatePassword(Long id, String password) {
+		User update = searchById(id);
+		update.setPassword(password);
+		return update;
+	}
+
 }
