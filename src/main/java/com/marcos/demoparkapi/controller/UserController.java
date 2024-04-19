@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.marcos.demoparkapi.dto.UserCreateDto;
+import com.marcos.demoparkapi.dto.UserResponseDto;
 import com.marcos.demoparkapi.entities.User;
+import com.marcos.demoparkapi.mapper.UserMapper;
 import com.marcos.demoparkapi.service.UserService;
 
 @RestController
@@ -24,9 +27,9 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping
-	public ResponseEntity<User> create(@RequestBody User user) {
-		User userSave = userService.save(user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(userSave);
+	public ResponseEntity<UserResponseDto> create(@RequestBody UserCreateDto createDTO) {
+		User userSave = userService.save(UserMapper.toUserCreate(createDTO));
+		return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(userSave));
 	}
 
 	@GetMapping("/{id}")
