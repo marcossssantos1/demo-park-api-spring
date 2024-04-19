@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.marcos.demoparkapi.dto.UserCreateDto;
+import com.marcos.demoparkapi.dto.UserPasswordDto;
 import com.marcos.demoparkapi.dto.UserResponseDto;
 import com.marcos.demoparkapi.entities.User;
 import com.marcos.demoparkapi.mapper.UserMapper;
@@ -33,15 +34,15 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id) {
+	public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
 		User userById = userService.searchById(id);
-		return ResponseEntity.ok(userById);
+		return ResponseEntity.ok(UserMapper.toUserResponse(userById));
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<User> updatePassword(@PathVariable Long id, @RequestBody User user) {
-		User userUpadtePassword = userService.updatePassword(id, user.getPassword());
-		return ResponseEntity.ok(userUpadtePassword);
+	public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UserPasswordDto passwordDTO){
+		userService.updatePassword(id, passwordDTO.getPassword(), passwordDTO.getNewPassword(), passwordDTO.getConfirmPassword());
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping
