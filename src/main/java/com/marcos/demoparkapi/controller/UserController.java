@@ -1,5 +1,7 @@
 package com.marcos.demoparkapi.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,27 +19,32 @@ import com.marcos.demoparkapi.service.UserService;
 @RestController
 @RequestMapping("api/v1/usuarios")
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@PostMapping
-	public ResponseEntity<User> create(@RequestBody User user){
+	public ResponseEntity<User> create(@RequestBody User user) {
 		User userSave = userService.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(userSave);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id){
+	public ResponseEntity<User> findById(@PathVariable Long id) {
 		User userById = userService.searchById(id);
 		return ResponseEntity.ok(userById);
 	}
-	
+
 	@PatchMapping("/{id}")
-	public ResponseEntity<User> updatePassword(@PathVariable Long id, @RequestBody User user){
+	public ResponseEntity<User> updatePassword(@PathVariable Long id, @RequestBody User user) {
 		User userUpadtePassword = userService.updatePassword(id, user.getPassword());
 		return ResponseEntity.ok(userUpadtePassword);
 	}
 
+	@GetMapping
+	public ResponseEntity<List<User>> findAll() {
+		List<User> users = userService.finAllUsers();
+		return ResponseEntity.status(HttpStatus.OK).body(users);
+	}
 
 }

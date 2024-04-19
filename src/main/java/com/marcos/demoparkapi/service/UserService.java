@@ -1,5 +1,7 @@
 package com.marcos.demoparkapi.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,11 @@ public class UserService {
 		User update = searchById(id);
 		update.setPassword(password);
 		return update;
+	}
+
+	@Transactional
+	public List<User> finAllUsers() {
+		return userRepository.findAll();
 	}
 
 }
