@@ -20,6 +20,8 @@ import com.marcos.demoparkapi.entities.User;
 import com.marcos.demoparkapi.mapper.UserMapper;
 import com.marcos.demoparkapi.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/usuarios")
 public class UserController {
@@ -28,7 +30,7 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping
-	public ResponseEntity<UserResponseDto> create(@RequestBody UserCreateDto createDTO) {
+	public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserCreateDto createDTO) {
 		User userSave = userService.save(UserMapper.toUserCreate(createDTO));
 		return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(userSave));
 	}
@@ -40,7 +42,7 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UserPasswordDto passwordDTO){
+	public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordDto passwordDTO){
 		userService.updatePassword(id, passwordDTO.getPassword(), passwordDTO.getNewPassword(), passwordDTO.getConfirmPassword());
 		return ResponseEntity.noContent().build();
 	}
@@ -50,5 +52,4 @@ public class UserController {
 		List<User> users = userService.finAllUsers();
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
-
 }
