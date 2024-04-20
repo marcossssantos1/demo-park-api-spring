@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ErrorMessage {
@@ -21,6 +23,7 @@ public class ErrorMessage {
 
 	private String message;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL) //Verifica se esta null se estiver não é enviado o campo!
 	private Map<String, String> errors;
 
 	public ErrorMessage(HttpServletRequest request, HttpStatus status, String message) {

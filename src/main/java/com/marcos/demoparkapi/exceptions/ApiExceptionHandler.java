@@ -13,10 +13,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class ApiExceptionHandler {
-	
-	  @ExceptionHandler(MethodArgumentNotValidException.class)
-	    public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request, BindingResult bindingResult){
-	        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body( new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "invalid fields", bindingResult));
-	    }
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex,
+			HttpServletRequest request, BindingResult bindingResult) {
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+				.body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "invalid fields", bindingResult));
+	}
+
+	@ExceptionHandler(UsernameUniqueViolationException.class)
+	public ResponseEntity<ErrorMessage> usernameUniqueViolationException(RuntimeException ex,
+			HttpServletRequest request) {
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+				.body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
+	}
 
 }
