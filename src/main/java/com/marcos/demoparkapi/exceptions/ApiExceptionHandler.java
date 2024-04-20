@@ -26,6 +26,10 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
+	@ExceptionHandler(PasswordInvalidException.class)
+    public ResponseEntity<ErrorMessage> invalidException(RuntimeException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(request,HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
 
 	@ExceptionHandler(UsernameUniqueViolationException.class)
 	public ResponseEntity<ErrorMessage> usernameUniqueViolationException(RuntimeException ex,

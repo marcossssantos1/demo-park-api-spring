@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.marcos.demoparkapi.entities.User;
+import com.marcos.demoparkapi.exceptions.PasswordInvalidException;
 import com.marcos.demoparkapi.exceptions.UserIdEntityNotFoundException;
 import com.marcos.demoparkapi.exceptions.UsernameUniqueViolationException;
 import com.marcos.demoparkapi.repository.UserRepository;
@@ -38,11 +39,11 @@ public class UserService {
 	public User updatePassword(Long id, String password, String newPassword, String confirmPassword) {
 
 		if (!newPassword.equals(confirmPassword)) {
-			throw new RuntimeException("The new password is not the same as confirmation!");
+			throw new PasswordInvalidException("The new password is not the same as confirmation!");
 		}
 		User update = searchById(id);
 		if (!update.getPassword().equals(password)) {
-			throw new RuntimeException("The password does not match the one created previously");
+			throw new PasswordInvalidException("The password does not match the one created previously");
 		}
 		update.setPassword(password);
 		return update;
