@@ -20,6 +20,12 @@ public class ApiExceptionHandler {
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
 				.body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "invalid fields", bindingResult));
 	}
+	
+	@ExceptionHandler(UserIdEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> userIdEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
 
 	@ExceptionHandler(UsernameUniqueViolationException.class)
 	public ResponseEntity<ErrorMessage> usernameUniqueViolationException(RuntimeException ex,

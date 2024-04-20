@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.marcos.demoparkapi.entities.User;
+import com.marcos.demoparkapi.exceptions.UserIdEntityNotFoundException;
 import com.marcos.demoparkapi.exceptions.UsernameUniqueViolationException;
 import com.marcos.demoparkapi.repository.UserRepository;
 
@@ -30,7 +31,7 @@ public class UserService {
 	}
 
 	public User searchById(Long id) {
-		return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+		return userRepository.findById(id).orElseThrow(() -> new UserIdEntityNotFoundException("Usuario não encontrado"));
 	}
 
 	@Transactional
