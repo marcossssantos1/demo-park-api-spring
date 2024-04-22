@@ -42,7 +42,7 @@ public class UserIT {
 	                .post()
 	                .uri("/api/v1/usuarios")
 	                .contentType(MediaType.APPLICATION_JSON)
-	                .bodyValue(new UserCreateDto("", "123456"))
+	                .bodyValue(new UserCreateDto("ana@gmail", "123456"))
 	                .exchange()
 	                .expectStatus().isEqualTo(422)
 	                .expectBody(ErrorMessage.class)
@@ -50,5 +50,20 @@ public class UserIT {
 
 	        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
 	        org.assertj.core.api.Assertions.assertThat(responseBody.getStatus()).isEqualTo(422);
+	    }
+	 
+	 @Test
+	    public void createUser_usernameAndPasswordRepetido_returnUserCreatedWithStatus409(){
+		 ErrorMessage  responseBody =  webTestClient
+	                .post()
+	                .uri("api/v1/usuarios")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .bodyValue(new UserCreateDto("ana@gmail.com", "123456"))
+	                .exchange()
+	                .expectStatus().isEqualTo(409)
+	                .expectBody(ErrorMessage.class)
+	                .returnResult().getResponseBody();
+	    org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+	    org.assertj.core.api.Assertions.assertThat(responseBody.getStatus()).isEqualTo(409);
 	    }
 }
