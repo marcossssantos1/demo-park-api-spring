@@ -17,11 +17,18 @@ import com.marcos.demoparkapi.dto.UserCreateDto;
 import com.marcos.demoparkapi.dto.UserPasswordDto;
 import com.marcos.demoparkapi.dto.UserResponseDto;
 import com.marcos.demoparkapi.entities.User;
+import com.marcos.demoparkapi.exceptions.ErrorMessage;
 import com.marcos.demoparkapi.mapper.UserMapper;
 import com.marcos.demoparkapi.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Usuarios", description = "Contem todas as operações relativas aos recursos para cadastro,, edição e leitura de um usuario")
 @RestController
 @RequestMapping("api/v1/usuarios")
 public class UserController {
@@ -29,6 +36,17 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	@Operation(summary = "Criar um novo usuario", description="Recurso para criar um novo usuario", responses = {
+			@ApiResponse(responseCode = "201",
+							description = "Usuario criado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+			@ApiResponse(responseCode = "409",
+					description = "E-mail já existe na base de dados",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+			@ApiResponse(responseCode = "422",
+					description = "Dados de entrada estão invalidos",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+	})
 	@PostMapping
 	public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserCreateDto createDTO) {
 		User userSave = userService.save(UserMapper.toUserCreate(createDTO));
