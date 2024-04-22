@@ -85,6 +85,11 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@Operation(summary = "Recuperar todos os usuarios", description="Recurso para buscar todos os usuario na base de dados", responses = {
+			@ApiResponse(responseCode = "200",
+							description = "Todos os usuarios foram recuperados com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class)))
+	})
 	@GetMapping
 	public ResponseEntity<List<User>> findAll() {
 		List<User> users = userService.finAllUsers();
