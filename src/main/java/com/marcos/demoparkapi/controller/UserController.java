@@ -68,6 +68,17 @@ public class UserController {
 		return ResponseEntity.ok(UserMapper.toUserResponse(userById));
 	}
 
+	@Operation(summary = "Atualizar a senha do usuario", description="Recurso para buscar um usuario pelo id e atualizar a senha", responses = {
+			@ApiResponse(responseCode = "204",
+							description = "Senha atualizada com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+			@ApiResponse(responseCode = "400",
+					description = "Senha não confere",
+					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+			@ApiResponse(responseCode = "404",
+			description = "Recurso não encontrado",
+			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+	})
 	@PatchMapping("/{id}")
 	public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordDto passwordDTO){
 		userService.updatePassword(id, passwordDTO.getPassword(), passwordDTO.getNewPassword(), passwordDTO.getConfirmPassword());
