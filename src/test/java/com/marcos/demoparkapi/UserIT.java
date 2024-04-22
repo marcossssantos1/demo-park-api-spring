@@ -9,6 +9,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.marcos.demoparkapi.dto.UserCreateDto;
 import com.marcos.demoparkapi.dto.UserResponseDto;
+import com.marcos.demoparkapi.exceptions.ErrorMessage;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = "users-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)//ANTES que metodo for executado é necessário que estaja no banco os registros
@@ -34,5 +35,20 @@ public class UserIT {
 	    org.assertj.core.api.Assertions.assertThat(responseBody.getUsername()).isEqualTo("anajulia@gmail.com");
 	    org.assertj.core.api.Assertions.assertThat(responseBody.getRole()).isEqualTo("CLIENTE");
 	    }
+	 
+	 @Test
+	    public void createUser_usernameInvalid_returnErrorMessageStatus422() {
+	        ErrorMessage responseBody = webTestClient
+	                .post()
+	                .uri("/api/v1/usuarios")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .bodyValue(new UserCreateDto("", "123456"))
+	                .exchange()
+	                .expectStatus().isEqualTo(422)
+	                .expectBody(ErrorMessage.class)
+	                .returnResult().getResponseBody();
 
+	        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+	        org.assertj.core.api.Assertions.assertThat(responseBody.getStatus()).isEqualTo(422);
+	    }
 }
