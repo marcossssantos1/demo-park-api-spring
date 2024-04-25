@@ -81,6 +81,7 @@ public class UserController {
 			description = "Recurso não encontrado",
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
 	})
+	@PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE') AND (#id == authentication.principal.id)")
 	@PatchMapping("/{id}")
 	public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordDto passwordDTO){
 		userService.passwordEdit(id, passwordDTO.getPassword(), passwordDTO.getNewPassword(), passwordDTO.getConfirmPassword());
