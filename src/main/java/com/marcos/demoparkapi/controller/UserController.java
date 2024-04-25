@@ -37,32 +37,19 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@Operation(summary = "Criar um novo usuario", description="Recurso para criar um novo usuario", responses = {
-			@ApiResponse(responseCode = "201",
-							description = "Usuario criado com sucesso",
-							content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
-			@ApiResponse(responseCode = "409",
-					description = "E-mail já existe na base de dados",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-			@ApiResponse(responseCode = "422",
-					description = "Dados de entrada estão invalidos",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
-	})
+	@Operation(summary = "Criar um novo usuario", description = "Recurso para criar um novo usuario", responses = {
+			@ApiResponse(responseCode = "201", description = "Usuario criado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+			@ApiResponse(responseCode = "409", description = "E-mail já existe na base de dados", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+			@ApiResponse(responseCode = "422", description = "Dados de entrada estão invalidos", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))) })
 	@PostMapping
 	public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserCreateDto createDTO) {
 		User userSave = userService.save(UserMapper.toUserCreate(createDTO));
 		return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(userSave));
 	}
-	
 
-	@Operation(summary = "Recuperar usuario pelo id", description="Recurso para buscar um usuario pelo id", responses = {
-			@ApiResponse(responseCode = "200",
-							description = "Usuario recuperado com sucesso",
-							content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
-			@ApiResponse(responseCode = "404",
-					description = "Recurso não encontrado",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
-	})
+	@Operation(summary = "Recuperar usuario pelo id", description = "Recurso para buscar um usuario pelo id", responses = {
+			@ApiResponse(responseCode = "200", description = "Usuario recuperado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+			@ApiResponse(responseCode = "404", description = "Recurso não encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))) })
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN') or (hasRole('CLIENTE') and #id == authentication.principal.id)")
 	public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
@@ -70,29 +57,21 @@ public class UserController {
 		return ResponseEntity.ok(UserMapper.toUserResponse(userById));
 	}
 
-	@Operation(summary = "Atualizar a senha do usuario", description="Recurso para buscar um usuario pelo id e atualizar a senha", responses = {
-			@ApiResponse(responseCode = "204",
-							description = "Senha atualizada com sucesso",
-							content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
-			@ApiResponse(responseCode = "400",
-					description = "Senha não confere",
-					content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-			@ApiResponse(responseCode = "404",
-			description = "Recurso não encontrado",
-			content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
-	})
+	@Operation(summary = "Atualizar a senha do usuario", description = "Recurso para buscar um usuario pelo id e atualizar a senha", responses = {
+			@ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+			@ApiResponse(responseCode = "400", description = "Senha não confere", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+			@ApiResponse(responseCode = "404", description = "Recurso não encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))) })
 	@PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE') AND (#id == authentication.principal.id)")
 	@PatchMapping("/{id}")
-	public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordDto passwordDTO){
-		userService.passwordEdit(id, passwordDTO.getPassword(), passwordDTO.getNewPassword(), passwordDTO.getConfirmPassword());
+	public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordDto passwordDTO) {
+		userService.passwordEdit(id, passwordDTO.getPassword(), passwordDTO.getNewPassword(),
+				passwordDTO.getConfirmPassword());
 		return ResponseEntity.noContent().build();
 	}
 
-	@Operation(summary = "Recuperar todos os usuarios", description="Recurso para buscar todos os usuario na base de dados", responses = {
-			@ApiResponse(responseCode = "200",
-							description = "Todos os usuarios foram recuperados com sucesso",
-							content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class)))
-	})
+	@Operation(summary = "Recuperar todos os usuarios", description = "Recurso para buscar todos os usuario na base de dados", responses = {
+			@ApiResponse(responseCode = "200", description = "Todos os usuarios foram recuperados com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))) })
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<UserResponseDto>> findAll() {
 		List<User> users = userService.finAllUsers();
