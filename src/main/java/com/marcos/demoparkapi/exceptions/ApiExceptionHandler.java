@@ -34,7 +34,7 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(request,HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 
-	@ExceptionHandler(UsernameUniqueViolationException.class)
+	@ExceptionHandler({UsernameUniqueViolationException.class, CpfUniqueViolationException.class})
 	public ResponseEntity<ErrorMessage> usernameUniqueViolationException(RuntimeException ex,
 			HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.CONFLICT)
