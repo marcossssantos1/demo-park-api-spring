@@ -7,11 +7,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import com.marcos.demoparkapi.dto.ClienteCreateDto;
-import com.marcos.demoparkapi.dto.ClienteResponseDto;
-import com.marcos.demoparkapi.dto.PagebleDto;
-import com.marcos.demoparkapi.dto.PagebleDto;
-import com.marcos.demoparkapi.exceptions.ErrorMessage;
+import com.marcoss.demoparkapi.dto.ClienteCreateDto;
+import com.marcoss.demoparkapi.dto.ClienteResponseDto;
+import com.marcoss.demoparkapi.dto.PagebleDto;
+import com.marcoss.demoparkapi.exceptions.ErrorMessage;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = "/sql/clientes/clientes-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

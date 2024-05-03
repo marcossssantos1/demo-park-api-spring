@@ -9,10 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import com.marcos.demoparkapi.dto.UserCreateDto;
-import com.marcos.demoparkapi.dto.UserPasswordDto;
-import com.marcos.demoparkapi.dto.UserResponseDto;
-import com.marcos.demoparkapi.exceptions.ErrorMessage;
+import com.marcoss.demoparkapi.dto.UserCreateDto;
+import com.marcoss.demoparkapi.dto.UserPasswordDto;
+import com.marcoss.demoparkapi.dto.UserResponseDto;
+import com.marcoss.demoparkapi.exceptions.ErrorMessage;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = "users-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD) // ANTES que metodo for

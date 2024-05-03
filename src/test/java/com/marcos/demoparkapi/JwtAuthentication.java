@@ -5,8 +5,8 @@ import java.util.function.Consumer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import com.marcos.demoparkapi.dto.UserAuthDto;
-import com.marcos.demoparkapi.jwt.JwtToken;
+import com.marcoss.demoparkapi.dto.UserAuthDto;
+import com.marcoss.demoparkapi.jwt.JwtToken;
 
 public class JwtAuthentication {
 

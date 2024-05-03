@@ -7,9 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import com.marcos.demoparkapi.dto.UserAuthDto;
-import com.marcos.demoparkapi.exceptions.ErrorMessage;
-import com.marcos.demoparkapi.jwt.JwtToken;
+import com.marcoss.demoparkapi.dto.UserAuthDto;
+import com.marcoss.demoparkapi.exceptions.ErrorMessage;
+import com.marcoss.demoparkapi.jwt.JwtToken;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = "users-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD) 
